@@ -6,7 +6,7 @@ Source: https://sketchfab.com/3d-models/bmw-m4-f82-8e87379f40fd40dcac0a751e22c1a
 Title: BMW M4 f82
 */
 
-import React from "react";
+import React, { useRef } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown } from "@fortawesome/free-regular-svg-icons";
@@ -15,15 +15,18 @@ import gsap from "gsap";
 export function BmwE4E82Model(props) {
   const [showEngine, setShowEngine] = React.useState(true);
   const { nodes, materials } = useGLTF("/bmw_m4_f82.glb");
+  const mesh = useRef();
 
   const handleShowEngine = () => {
     setShowEngine(!showEngine);
-    handleCameraPosition(0, 35.95793720451623, 11.417788315842438, 3);
+    handleCameraPosition(0, 18.500376009883084, 1.667256371091276, 3);
+    handleMeshPosition(0, 0, -1.8, 3);
   };
 
   const handleRoof = () => {
     setShowEngine(true);
     handleCameraPosition(0.003963027770314899, 22.402685799651426, 5, 3);
+    handleMeshPosition(0, 0, 1.5, 3);
   };
   const handleWheel = () => {
     setShowEngine(true);
@@ -33,6 +36,7 @@ export function BmwE4E82Model(props) {
       0.970675061558854,
       3
     );
+    handleMeshPosition(0, -1, -2, 3);
   };
 
   const handleBacklamp = () => {
@@ -43,8 +47,7 @@ export function BmwE4E82Model(props) {
       -25.37950696268416,
       3
     );
-
-    console.log(props.camera.position);
+    handleMeshPosition(0, -1, 0, 3);
   };
 
   const handleCameraPosition = (x, y, z, duration) => {
@@ -59,8 +62,17 @@ export function BmwE4E82Model(props) {
     });
   };
 
+  const handleMeshPosition = (x, y, z, duration) => {
+    gsap.to(mesh.current.position, {
+      x,
+      y,
+      z,
+      duration,
+    });
+  };
+
   return (
-    <group {...props} dispose={null}>
+    <group {...props} dispose={null} ref={mesh}>
       <group scale={0.01}>
         <group position={[0, 0, -0.153]} scale={100}>
           <mesh>
