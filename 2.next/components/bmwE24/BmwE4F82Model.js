@@ -10,6 +10,7 @@ import React from "react";
 import { useGLTF, Html } from "@react-three/drei";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown } from "@fortawesome/free-regular-svg-icons";
+import gsap from "gsap";
 
 export function BmwE4E82Model(props) {
   const [showEngine, setShowEngine] = React.useState(true);
@@ -17,11 +18,86 @@ export function BmwE4E82Model(props) {
 
   const handleShowEngine = () => {
     setShowEngine(!showEngine);
+    handleCameraPosition(0, 35.95793720451623, 11.417788315842438, 3);
+  };
+
+  const handleRoof = () => {
+    setShowEngine(true);
+    handleCameraPosition(0.003963027770314899, 22.402685799651426, 5, 3);
+  };
+  const handleWheel = () => {
+    setShowEngine(true);
+    handleCameraPosition(
+      22.56778291865045,
+      1.383155797192535e-15,
+      0.970675061558854,
+      3
+    );
+  };
+
+  const handleBacklamp = () => {
+    setShowEngine(true);
+    handleCameraPosition(
+      10.34773208483095,
+      2.3041599094627614,
+      -25.37950696268416,
+      3
+    );
+
+    console.log(props.camera.position);
+  };
+
+  const handleCameraPosition = (x, y, z, duration) => {
+    gsap.to(props.camera.position, {
+      x,
+      y,
+      z,
+      duration,
+      onComplete: () => {
+        props.camera.position.set(x, y, z);
+      },
+    });
   };
 
   return (
     <group {...props} dispose={null}>
       <group scale={0.01}>
+        <group position={[0, 0, -0.153]} scale={100}>
+          <mesh>
+            <Html distanceFactor={10} position={[0, 0.9, 1.3]}>
+              <button onClick={() => handleShowEngine()}>
+                <FontAwesomeIcon
+                  icon={faArrowAltCircleDown}
+                  style={{ color: "red" }}
+                />
+              </button>
+            </Html>
+            <Html distanceFactor={10} position={[0, 1.5, -0.5]}>
+              <button onClick={() => handleRoof()}>
+                <FontAwesomeIcon
+                  icon={faArrowAltCircleDown}
+                  style={{ color: "red" }}
+                />
+              </button>
+            </Html>
+            <Html distanceFactor={10} position={[0.75, 0.432, 1.365]}>
+              <button onClick={() => handleWheel()}>
+                <FontAwesomeIcon
+                  icon={faArrowAltCircleDown}
+                  style={{ color: "red" }}
+                />
+              </button>
+            </Html>
+            <Html distanceFactor={10} position={[0.65, 0.95, -2.3]}>
+              <button onClick={() => handleBacklamp()}>
+                <FontAwesomeIcon
+                  icon={faArrowAltCircleDown}
+                  style={{ color: "red" }}
+                />
+              </button>
+            </Html>
+          </mesh>
+        </group>
         <group rotation={[-Math.PI / 2, 0, 0]} scale={100}>
           <mesh
             castShadow
@@ -246,16 +322,7 @@ export function BmwE4E82Model(props) {
             receiveShadow
             geometry={nodes.ARm4_steer_carbon_ARm4_common_bmw_logo_0.geometry}
             material={materials.ARm4_common_bmw_logo}
-          >
-            <Html distanceFactor={10} position={[-0.42, -1.7, 0.8]}>
-              <button onClick={() => handleShowEngine()}>
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleDown}
-                  style={{ color: "white" }}
-                />
-              </button>
-            </Html>
-          </mesh>
+          ></mesh>
           <mesh
             castShadow
             receiveShadow
